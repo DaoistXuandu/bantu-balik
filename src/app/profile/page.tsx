@@ -48,7 +48,6 @@ export default function Profile() {
         }
 
         if (response.status) {
-            console.log(response)
             setRefunds(response.refund)
         }
     }

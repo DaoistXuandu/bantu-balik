@@ -72,7 +72,6 @@ export default function Refund() {
             }
 
             const user_id = Cookies.get('id')
-            console.log(user_id)
             fetch(`${process.env.NEXT_PUBLIC_HOST}/api/refund`, {
                 method: "POST",
                 body: JSON.stringify({

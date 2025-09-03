@@ -1,42 +1,84 @@
 'use client'
-import Chat from "@/components/chat";
 import ItemNavbar from "@/components/item-navbar";
-import Refund from "@/components/refund";
-import { refund_data } from "@/config/data";
-import { noto_sans, nunito } from "@/lib/font";
-import { useState } from "react";
+import { nunito } from "@/lib/font";
+import { useParams } from "next/navigation";
+import { useEffect, useState } from "react";
+import { RealtimeChat } from '@/components/realtime-chat'
+import Cookies from 'js-cookie';
 
 export default function RefundItem() {
-    const [process, setProcess] = useState(true)
-    const [valid, setValid] = useState(true)
+    const [loaded, setLoaded] = useState(false)
+    const [refund, setRefund] = useState<RefundSingleInteraface>()
+    const [item, setItem] = useState<ItemInterface>()
+    const params = useParams()
+
+    async function updateRefund(verdict: boolean) {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/update-refund`, {
+            method: "PATCH",
+            body: JSON.stringify({
+                id: params.refund,
+                verdict: verdict
+            }),
+            headers: {
+                "Content-type": "application/json; charset=UTF-8"
+            }
+        })
+            .then(data => data.json())
+            .then(response => response)
+    }
+
+    async function getRefund() {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/get-refund`, {
+            method: "PATCH",
+            body: JSON.stringify({
+                id: params.refund,
+            }),
+            headers: {
+                "Content-type": "application/json; charset=UTF-8"
+            }
+        })
+            .then(data => data.json())
+            .then(response => response)
+
+        if (response.status) {
+            setRefund(response.refund)
+            fetch(`${process.env.NEXT_PUBLIC_HOST}/api/item`, {
+                method: "PATCH",
+                body: JSON.stringify({
+                    item_id: response.refund.item_id,
+                }),
+                headers: {
+                    "Content-type": "application/json; charset=UTF-8"
+                }
+            })
+                .then(data => data.json())
+                .then(response => setItem(response.item))
+        }
+    }
+
+    useEffect(() => {
+        getRefund()
+        setLoaded(true)
+    }, [loaded])
 
     return (
         <div className="min-h-screen max-h-fit bg-gray-100">
             <ItemNavbar profile={true} />
-            <div className="relative text-black flex flex-row pl-24 pr-24 mt-10 gap-5">
-                <div className={`w-3/12 bg-white p-5 shadow-lg rounded-md flex flex-col gap-3 ${nunito.className}`}>
-                    <img src={refund_data[0].image_main} className="rounded-md" alt="" />
-                    <div className="text-sm">{refund_data[0].caption}</div>
-                </div>
-                <div className="relative w-9/12 relative flex flex-col gap-2">
-                    <img className="ml-12 max-w-32 rounded-md" src={refund_data[0].image_refund} alt="" />
-                    <Chat left={true} desc={refund_data[0].description} />
-                    <Chat left={false} desc={refund_data[0].description} />
-                    <Chat left={true} desc={refund_data[0].description} />
-                </div>
-            </div>
-            <div className="text-black absolute bottom-10 flex flex-row pl-24 pr-24 flex flex-row w-full gap-5">
-                <div className="w-3/12 flex flex-row gap-5 items-center">
-                    <div className="border-2 bg-white border-red-500 p-3 shadow-lg pl-4 pr-4 font-thin text-red-500 rounded-full">Tolak Refund</div>
-                    <div className="font-bold text-white bg-green-700 p-3 shadow-lg pl-4 pr-4 rounded-full">Refund Selesai</div>
-                </div>
-                <div className="w-9/12 flex flex-row justify-between p-3 bg-white rounded-full pl-8 gap-5 items-center shadow-xl">
-                    <input type="text" placeholder="Ketik pesan anda disini!" className="w-full focus:outline-none" />
-                    <div>
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
-                            <path strokeLinecap="round" strokeLinejoin="round" d="M6 12 3.269 3.125A59.769 59.769 0 0 1 21.485 12 59.768 59.768 0 0 1 3.27 20.875L5.999 12Zm0 0h7.5" />
-                        </svg>
+            <div className="text-black flex flex-row pl-24 pr-24 mt-10 gap-5 h-full">
+                <div className={`w-3/12 h-fit flex flex-col gap-3 ${nunito.className}`}>
+                    <div className="flex flex-col gap-3 bg-white p-5 shadow-lg rounded-md">
+                        <img src={item?.image} className="rounded-md" alt="" />
+                        <div className="text-sm">{item?.name}</div>
+                        <div className={`${item != null ? '' : 'hidden'} text-sm font-bold`}>Rp {item?.price}</div>
                     </div>
+                    <div className="w-full flex flex-row gap-5 items-center justify-between">
+                        <div onClick={e => updateRefund(false)} className="w-1/2 text-center cursor-pointer hover:scale-95 border-2 bg-white border-red-500 p-3 shadow-lg pl-4 pr-4 font-thin text-red-500 rounded-md">Tolak Refund</div>
+                        <div onClick={e => updateRefund(true)} className="w-1/2 text-center cursor-pointer hover:scale-95 font-bold text-white bg-green-700 p-3 shadow-lg pl-4 pr-4 rounded-md">Refund Selesai</div>
+                    </div>
+                </div>
+                <div className="relative w-9/12 relative flex flex-col gap-2 h-full">
+                    <img className="ml-12 max-w-32 rounded-md" src={refund?.review_image} alt="" />
+                    <RealtimeChat roomName={params.refund as string} username={Cookies.get('username') as string} />
                 </div>
             </div>
         </div >
