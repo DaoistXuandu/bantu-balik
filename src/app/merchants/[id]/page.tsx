@@ -10,7 +10,7 @@ import { useParams } from 'next/navigation'
 import { useEffect, useState } from "react";
 import Cookies from 'js-cookie';
 
-export default function Store({ id }: { id: string }) {
+export default function Store() {
     const [keyword, setKeyword] = useState("")
 
     const [loaded, setLoaded] = useState(false)
