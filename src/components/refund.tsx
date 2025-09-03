@@ -2,16 +2,35 @@
 
 import { noto_sans } from "@/lib/font"
 
-export default function Refund({ status, image_main, image_review, user, merchant, caption }: {
+export default function Refund({ id, process, done, verdict, state, status, image_main, image_review, user, merchant, caption }: {
     image_main: string,
     image_review: string,
     user: string,
     merchant: string,
     caption: string,
-    status: string
+    status: string,
+    state: boolean,
+    process: boolean,
+    done: boolean,
+    verdict: string,
+    id: string
 }) {
+    function check() {
+        let status = verdict == "Valid"
+        let pipeline = done
+        if (!state)
+            status = !status
+
+        if (process)
+            pipeline = !pipeline
+
+        status = status && pipeline
+
+        return status
+    }
+
     return (
-        <div className={`w-full p-3 bg-gray-100 rounded-sm inset-shadow-sm flex flex-row gap-2 ${noto_sans.className}`}>
+        <div className={`${check() ? '' : 'hidden'} w-full p-3 bg-gray-100 rounded-sm inset-shadow-sm flex flex-row gap-2 ${noto_sans.className}`}>
             <div className="w-10/12 flex flex-row gap-3 items-center">
                 <img src={image_main} className="size-24 rounded-sm" alt="" />
                 <img src={image_review} className="size-24 rounded-sm" alt="" />
@@ -27,8 +46,9 @@ export default function Refund({ status, image_main, image_review, user, merchan
                 </div>
             </div>
             <div className="w-2/12 flex flex-col items-center justify-center p-3 gap-3">
-                <div className="p-1 bg-green-700 font-bold text-white w-full text-center rounded-md text-md">Lihat Detail</div>
-                <div className="w-full font-bold text-center border-2 border-red-500 text-red-500 text-sm p-1 rounded-sm">Spam?</div>
+                <a href={`/profile/${id}`} className="cursor-pointer p-1 bg-green-700 font-bold text-white w-full text-center rounded-md text-md">
+                    Lihat Detail
+                </a>
             </div>
         </div>
     )

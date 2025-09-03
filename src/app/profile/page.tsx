@@ -5,7 +5,6 @@ import { noto_sans, nunito } from "@/lib/font";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import Cookies from 'js-cookie';
-import { merchant } from "@/config/data";
 
 export default function Profile() {
     const params = useParams()
@@ -13,6 +12,7 @@ export default function Profile() {
     const [valid, setValid] = useState(true)
     const [loaded, setLoaded] = useState(false)
     const [refunds, setRefunds] = useState<RefundInterface[]>([])
+    const [spam, setSpam] = useState(false)
 
     async function getAllRefunds() {
         let id = Cookies.get("username")
@@ -75,13 +75,18 @@ export default function Profile() {
                         {
                             refunds.map(refund => (
                                 <Refund
+                                    id={refund.id}
                                     status={Cookies.get("status") as string}
                                     user={refund.user}
                                     merchant={refund.merchant}
                                     caption={refund.caption}
                                     image_main={refund.main}
                                     image_review={refund.review}
-                                    key={refund.id} />
+                                    key={refund.id}
+                                    verdict={refund.verdict}
+                                    state={valid}
+                                    done={refund.status}
+                                    process={processData} />
                             ))
                         }
                     </div>
