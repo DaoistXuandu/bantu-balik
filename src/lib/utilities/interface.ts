@@ -24,11 +24,3 @@ type RefundInterface = {
     verdict: string;
     last_updated: string;
 }
-
-type RefundSingleInteraface = {
-    id: string;
-    main_image: string;
-    review_image: string;
-    caption: string;
-    status: boolean;
-}

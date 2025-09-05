@@ -13,6 +13,8 @@ import { Send } from 'lucide-react'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { secret_word } from '@/config/data'
 import Cookies from 'js-cookie';
+import { updateMessageId } from '@/lib/messages/update-status-message'
+import { updateDateRefund } from '@/lib/messages/update-last-message'
 
 interface RealtimeChatProps {
   image: string
@@ -53,12 +55,15 @@ export const RealtimeChat = ({
   // Merge realtime messages with initial messages
   const allMessages = useMemo(() => {
     const mergedMessages = [...initialMessages, ...realtimeMessages]
-    // Remove duplicates based on message id
     const uniqueMessages = mergedMessages.filter(
       (message, index, self) => index === self.findIndex((m) => m.id === message.id)
     )
-    // Sort by creation date
+
     const sortedMessages = uniqueMessages.sort((a, b) => a.createdAt.localeCompare(b.createdAt))
+    const currentUser = Cookies.get('username') as string
+    sortedMessages.map(message => (
+      message.user.name != currentUser && !message.read && updateMessageId(message.id)
+    ))
 
     const data = Cookies.get('status');
     if (data == "true" && sortedMessages.length <= 2) {
@@ -87,6 +92,7 @@ export const RealtimeChat = ({
       e.preventDefault()
       if (!newMessage.trim() || !isConnected) return
 
+      updateDateRefund(roomName)
       sendMessage(newMessage)
       setNewMessage('')
     },

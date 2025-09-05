@@ -8,7 +8,7 @@ import Cookies from 'js-cookie';
 import { ChatMessage } from "@/hooks/use-realtime-chat";
 import { storeMessages } from "@/lib/messages/store-messages";
 import { apps_name, secret_word } from "@/config/data";
-import { getMessages } from "@/lib/messages/get-message";
+import { getMessagesByRoom } from "@/lib/messages/get-message-room";
 import Loader from "@/components/utils/wait";
 
 export default function RefundItem() {
@@ -16,7 +16,7 @@ export default function RefundItem() {
     const router = useRouter()
 
     const [loaded, setLoaded] = useState(false)
-    const [refund, setRefund] = useState<RefundSingleInteraface>()
+    const [refund, setRefund] = useState<RefundInterface>()
     const [item, setItem] = useState<ItemInterface>()
     const [initialMessage, setInitialMessage] = useState<ChatMessage[]>([]);
     const [isUser, setIsUser] = useState(false)
@@ -24,7 +24,7 @@ export default function RefundItem() {
 
 
     const handleMessage = async (messages: ChatMessage[]) => {
-        await storeMessages(messages, params.refund as string, Cookies.get("username") as string)
+        await storeMessages(messages, params.refund as string, Cookies.get("username") as string, refund?.merchant as string, refund?.user as string)
     }
 
     async function updateRefund(verdict: boolean) {
@@ -79,21 +79,24 @@ export default function RefundItem() {
                     content: secret_word,
                     user: { name: apps_name },
                     createdAt: new Date().toISOString(),
+                    read: false
                 },
                 {
                     id: crypto.randomUUID(),
                     content: response.refund.caption,
                     user: { name: apps_name },
                     createdAt: new Date().toISOString(),
+                    read: false
                 },
             ];
 
-            const data = await getMessages(params.refund as string)
-            const formatted: ChatMessage[] = data.map((m) => ({
+            const data = await getMessagesByRoom(params.refund as string)
+            const formatted: ChatMessage[] = data.map((m: any) => ({
                 id: m.id,
                 content: m.content,
                 user: { name: m.username },
                 createdAt: m.created_at,
+                read: m.read
             }));
 
             const allMessages = [...starterMessages, ...formatted];
@@ -103,10 +106,12 @@ export default function RefundItem() {
     }
 
     useEffect(() => {
+        setWait(true)
         const data = Cookies.get('status')
         setIsUser(data == "true")
         getRefund()
         setLoaded(true)
+        setWait(false)
     }, [loaded])
 
     return (
@@ -116,7 +121,7 @@ export default function RefundItem() {
             <div className="text-black flex flex-row pl-24 pr-20 mt-10 gap-5 h-full">
                 <div className={`w-3/12 h-fit flex flex-col gap-3 ${nunito.className}`}>
                     <div className="flex flex-col gap-3 bg-white p-5 shadow-lg rounded-md">
-                        <img src={item ? item.image : refund?.main_image} className="rounded-md" alt="" />
+                        <img src={item ? item.image : refund?.main} className="rounded-md" alt="" />
                         <div className="text-sm">{item?.name}</div>
                         <div className={`${item != null ? '' : 'hidden'} text-sm font-bold`}>Rp {item?.price}</div>
                     </div>
@@ -128,7 +133,7 @@ export default function RefundItem() {
                 <div className="relative w-9/12 flex flex-col gap-2 pl-10 h-full">
                     <div className="bottom-5 right-5 w-full h-[650px] shadow-lg rounded-lg overflow-hidden bg-white">
                         <RealtimeChat
-                            image={refund?.review_image as string}
+                            image={refund?.review as string}
                             roomName={params.refund as string}
                             username={Cookies.get('username') as string}
                             messages={initialMessage}

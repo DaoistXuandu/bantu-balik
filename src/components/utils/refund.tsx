@@ -1,8 +1,7 @@
 'use client'
 
 import { noto_sans } from "@/lib/utilities/font"
-import { useEffect } from "react"
-export default function Refund({ lastUpdateAt, id, isSearchProcess, isAlreadyDone, verdict, isValid, isUser, image_main, image_review, user, merchant, caption }: {
+export default function Refund({ unreadMessages, lastUpdateAt, id, isSearchProcess, isAlreadyDone, verdict, isValid, isUser, image_main, image_review, user, merchant, caption }: {
     image_main: string,
     image_review: string,
     user: string,
@@ -10,7 +9,8 @@ export default function Refund({ lastUpdateAt, id, isSearchProcess, isAlreadyDon
     caption: string,
     verdict: string,
     id: string,
-    lastUpdateAt: string;
+    lastUpdateAt: string,
+    unreadMessages: number,
 
     isUser: boolean,
     isValid: boolean,
@@ -23,7 +23,12 @@ export default function Refund({ lastUpdateAt, id, isSearchProcess, isAlreadyDon
                 return !isAlreadyDone
             }
             else {
-                return isAlreadyDone
+                if (isValid) {
+                    return verdict.toLocaleLowerCase() == "valid"
+                }
+                else {
+                    return verdict.toLocaleLowerCase() != "valid"
+                }
             }
         }
         else {
@@ -70,10 +75,6 @@ export default function Refund({ lastUpdateAt, id, isSearchProcess, isAlreadyDon
         return humanReadable
     }
 
-    useEffect(() => {
-        console.log(id)
-    }, [])
-
     return (
         <div className={`${check() ? '' : 'hidden'} w-full p-3 bg-gray-100 rounded-sm inset-shadow-sm flex flex-row gap-2 ${noto_sans.className}`}>
             <div className="w-10/12 flex flex-row gap-3 items-center">
@@ -85,7 +86,7 @@ export default function Refund({ lastUpdateAt, id, isSearchProcess, isAlreadyDon
                             !isUser ? user : merchant
                         }
                     </div>
-                    <div className="text-md font-thin">{
+                    <div className="text-sm font-thin">{
                         convertDate(lastUpdateAt)
                     }</div>
                     <div className="text-gray-700 text-sm leading-relaxed">
@@ -94,7 +95,15 @@ export default function Refund({ lastUpdateAt, id, isSearchProcess, isAlreadyDon
                 </div>
             </div>
             <div className="w-2/12 flex flex-col items-center justify-center p-3 gap-3 cursor-pointer hover:scale-95">
-                <a href={`/profile/${id}`} className="cursor-pointer p-2 bg-green-700 font-bold text-white w-full text-center rounded-sm text-md">
+                <a
+                    href={`/profile/${id}`}
+                    className="relative cursor-pointer p-2 bg-green-700 font-bold text-white w-full text-center rounded-sm text-md shadow-md"
+                >
+                    {/* Badge */}
+                    <div className={`absolute top-0 left-0 -translate-x-1/2 -translate-y-1/2 bg-red-500 text-white text-xs rounded-full h-fit aspect-square p-1 pl-3 pr-3 flex items-center justify-center ${unreadMessages ? '' : 'hidden'}`}>
+                        {unreadMessages}
+                    </div>
+
                     Lihat Detail
                 </a>
             </div>

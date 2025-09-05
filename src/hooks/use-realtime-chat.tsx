@@ -1,6 +1,7 @@
 'use client'
 
-import { createClient } from '@/lib/supabase/client'
+import { supabase } from '@/lib/supabase/client'
+import { read } from 'fs'
 import { useCallback, useEffect, useState } from 'react'
 
 interface UseRealtimeChatProps {
@@ -14,13 +15,13 @@ export interface ChatMessage {
   user: {
     name: string
   }
-  createdAt: string
+  createdAt: string,
+  read: boolean
 }
 
 const EVENT_MESSAGE_TYPE = 'message'
 
 export function useRealtimeChat({ roomName, username }: UseRealtimeChatProps) {
-  const supabase = createClient()
   const [messages, setMessages] = useState<ChatMessage[]>([])
   const [channel, setChannel] = useState<ReturnType<typeof supabase.channel> | null>(null)
   const [isConnected, setIsConnected] = useState(false)
@@ -56,6 +57,7 @@ export function useRealtimeChat({ roomName, username }: UseRealtimeChatProps) {
           name: username,
         },
         createdAt: new Date().toISOString(),
+        read: false,
       }
 
       // Update local state immediately for the sender

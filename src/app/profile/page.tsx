@@ -4,6 +4,8 @@ import Refund from "@/components/utils/refund";
 import { noto_sans } from "@/lib/utilities/font";
 import { useEffect, useState } from "react";
 import Cookies from 'js-cookie';
+import { useListenerDB } from "@/hooks/use-update-history";
+import { getMessagesByUser } from "@/lib/messages/get-messages-user";
 
 export default function Profile() {
     const [processData, setProcessData] = useState(true)
@@ -11,6 +13,18 @@ export default function Profile() {
     const [loaded, setLoaded] = useState(false)
     const [refunds, setRefunds] = useState<RefundInterface[]>([])
     const [user, setUser] = useState(false)
+    const [unreads, setUnreads] = useState<{ [key: string]: number }>({});
+    const [currentUser, setCurrentUser] = useState(Cookies.get('username') as string)
+
+    const { refundId, username, read, prev } = useListenerDB()
+
+    const updateItem = (key: string, delta: number = 1) => {
+        setUnreads(prev => ({
+            ...prev,
+            [key]: (prev[key] ?? 0) + delta,
+        }));
+    };
+
 
     async function getAllRefunds() {
         let id = Cookies.get("username")
@@ -30,6 +44,10 @@ export default function Profile() {
                 const sortedRefund = response.refund.sort((a: RefundInterface, b: RefundInterface) => b.last_updated.localeCompare(a.last_updated))
                 setRefunds(sortedRefund)
             })
+
+        getMessagesByUser(currentUser, currentUser).then(
+            items => setUnreads(items)
+        )
     }
 
     useEffect(() => {
@@ -42,10 +60,14 @@ export default function Profile() {
                 setValid(window.location.href.split("#")[1].split("&")[1] == "true")
             }
         }
-
         getAllRefunds()
         setLoaded(true)
     }, [loaded])
+
+    useEffect(() => {
+        if (!read && username != currentUser)
+            updateItem(refundId)
+    }, [prev, refundId, username, read])
 
     return (
         <div className="min-h-screen max-h-fit bg-gray-100 pb-10">
@@ -64,6 +86,7 @@ export default function Profile() {
                         {
                             refunds.map(refund => (
                                 <Refund
+                                    unreadMessages={unreads[refund.id]}
                                     id={refund.id}
                                     isUser={user}
                                     user={refund.user}
