@@ -1,13 +1,15 @@
-import { cn } from '@/lib/utils'
+import { cn } from '@/lib/utilities/utils'
 import type { ChatMessage } from '@/hooks/use-realtime-chat'
 
 interface ChatMessageItemProps {
   message: ChatMessage
   isOwnMessage: boolean
   showHeader: boolean
+  firstMessage: boolean
+  image: string
 }
 
-export const ChatMessageItem = ({ message, isOwnMessage, showHeader }: ChatMessageItemProps) => {
+export const ChatMessageItem = ({ message, isOwnMessage, showHeader, firstMessage, image }: ChatMessageItemProps) => {
   return (
     <div className={`flex mt-2 ${isOwnMessage ? 'justify-end' : 'justify-start'}`}>
       <div
@@ -31,14 +33,19 @@ export const ChatMessageItem = ({ message, isOwnMessage, showHeader }: ChatMessa
             </span>
           </div>
         )}
-        <div
-          className={cn(
-            'py-2 px-3 rounded-xl text-sm w-fit',
-            isOwnMessage ? 'bg-primary text-primary-foreground' : 'bg-muted text-foreground'
-          )}
-        >
-          {message.content}
-        </div>
+        {
+          firstMessage ?
+            <img className="px-3 max-w-32 rounded-md" src={image} alt="" />
+            :
+            <div
+              className={cn(
+                'py-2 px-3 ml-3 mr-3 rounded-xl text-sm w-fit',
+                isOwnMessage ? 'bg-primary text-primary-foreground' : 'bg-muted text-foreground'
+              )}
+            >
+              {message.content}
+            </div>
+        }
       </div>
     </div>
   )

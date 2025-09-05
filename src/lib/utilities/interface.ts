@@ -22,6 +22,7 @@ type RefundInterface = {
     merchant: string;
     status: boolean;
     verdict: string;
+    last_updated: string;
 }
 
 type RefundSingleInteraface = {

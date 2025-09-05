@@ -1,6 +1,6 @@
 'use client'
 
-import { noto_sans } from "@/lib/font"
+import { noto_sans } from "@/lib/utilities/font"
 
 export default function Merchant({ image, name, city, id }: MerchantProps) {
     return (

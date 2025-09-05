@@ -1,6 +1,6 @@
 'use client'
 
-import { noto_sans } from "@/lib/font"
+import { noto_sans } from "@/lib/utilities/font"
 
 export default function StoreBanner({ name, place, total_of_refund, image }: { name: string, place: string, total_of_refund: number, image: string }) {
     return (

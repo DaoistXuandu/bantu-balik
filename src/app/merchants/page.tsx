@@ -1,6 +1,6 @@
 'use client'
-import Merchant from "@/components/merchant";
-import MainNavbar from "@/components/main-navbar";
+import Merchant from "@/components/utils/merchant";
+import MainNavbar from "@/components/navbar/main-navbar";
 import { merchant } from "@/config/data";
 import { useEffect, useState } from "react";
 import Cookies from 'js-cookie';
@@ -19,7 +19,7 @@ export default function Merchants() {
             router.push("/login")
         }
         setLoaded(true)
-    }, [])
+    }, [loaded])
 
     return (
         <div className={`min-h-screen max-h-fit bg-white ${loaded ? '' : 'hidden'}`}>

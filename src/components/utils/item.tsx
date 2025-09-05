@@ -1,6 +1,6 @@
 'use client'
 
-import { noto_sans } from "@/lib/font"
+import { noto_sans } from "@/lib/utilities/font"
 import { useParams } from "next/navigation"
 import { useEffect } from "react"
 

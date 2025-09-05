@@ -41,6 +41,9 @@ const refund_data = [
     }
 ]
 
+const secret_word = "raihan-tampan"
 
-export { merchant, refund_data, id_to_merchant }
+const apps_name = "BantuBalik.in"
+
+export { merchant, refund_data, id_to_merchant, secret_word, apps_name }
 

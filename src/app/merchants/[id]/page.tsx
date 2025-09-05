@@ -1,10 +1,10 @@
 
 
 'use client'
-import Item from "@/components/item";
-import MainNavbar from "@/components/main-navbar";
-import ManualAdd from "@/components/manual-add";
-import StoreBanner from "@/components/store-banner";
+import Item from "@/components/utils/item";
+import MainNavbar from "@/components/navbar/main-navbar";
+import ManualAdd from "@/components/helper/manual-add";
+import StoreBanner from "@/components/helper/store-banner";
 import { id_to_merchant, merchant } from "@/config/data";
 import { useParams } from 'next/navigation'
 import { useEffect, useState } from "react";
@@ -62,7 +62,6 @@ export default function Store() {
     useEffect(() => {
         getTotalRefund()
         getAllItems()
-        setLoaded(true)
     }, [loaded])
 
     return (

@@ -1,6 +1,7 @@
 'use client'
 import { useEffect, useState } from "react";
-import { lato, noto_sans, nunito, poppins } from "../lib/font";
+import { lato, noto_sans, nunito, poppins } from "../lib/utilities/font";
+import { apps_name } from "@/config/data";
 
 export default function Home() {
   const [loaded, setLoaded] = useState(false);
@@ -18,7 +19,7 @@ export default function Home() {
               <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75 11.25 15 15 9.75m-3-7.036A11.959 11.959 0 0 1 3.598 6 11.99 11.99 0 0 0 3 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285Z" />
             </svg>
             <p className={`${poppins.className} text-2xl text-green-800`}>
-              BantuBalik.ai
+              {apps_name}
             </p>
           </div>
           <div className={`hidden md:flex ${nunito.className} text-gray-500 flex-row md:gap-10 lg:gap-18 md:text-lg lg:text-xl items-center pr-12 cursor-pointer`}>
@@ -37,10 +38,10 @@ export default function Home() {
           <div className={`relative z-50 flex flex-col gap-6 ${loaded ? '' : 'opacity-0'} transition duration-1000 ease-in-out`}>
             <div className="flex flex-col md:text-4xl lg:text-6xl font-bold">
               <div>Mau <b className="text-white bg-green-950 pr-2 pl-2">Refund?</b></div>
-              <div className="mt-3"><b className="text-white bg-green-950 pr-2 pl-2">BantuBalik</b> Aja!</div>
+              <div className="mt-3"><b className="text-white bg-green-950 pr-2 pl-2">{apps_name}</b> Aja!</div>
             </div>
             <p className="text-xl text-gray-600">
-              Proses refund jadi lebih cepat, mudah, dan aman bersama BantuBalik.ai.
+              Proses refund jadi lebih cepat, mudah, dan aman bersama {apps_name}.
               Tinggal lapor, kami yang urus sampai tuntas!
             </p>
           </div>

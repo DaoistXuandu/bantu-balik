@@ -1,7 +1,7 @@
 'use client'
 
-import { cn } from '@/lib/utils'
-import { ChatMessageItem } from '@/components/chat-message'
+import { cn } from '@/lib/utilities/utils'
+import { ChatMessageItem } from '@/components/utils/chat-message'
 import { useChatScroll } from '@/hooks/use-chat-scroll'
 import {
   type ChatMessage,
@@ -11,8 +11,11 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Send } from 'lucide-react'
 import { useCallback, useEffect, useMemo, useState } from 'react'
+import { secret_word } from '@/config/data'
+import Cookies from 'js-cookie';
 
 interface RealtimeChatProps {
+  image: string
   roomName: string
   username: string
   onMessage?: (messages: ChatMessage[]) => void
@@ -28,6 +31,7 @@ interface RealtimeChatProps {
  * @returns The chat component
  */
 export const RealtimeChat = ({
+  image,
   roomName,
   username,
   onMessage,
@@ -44,6 +48,7 @@ export const RealtimeChat = ({
     username,
   })
   const [newMessage, setNewMessage] = useState('')
+  const [wait, setWait] = useState(false)
 
   // Merge realtime messages with initial messages
   const allMessages = useMemo(() => {
@@ -54,6 +59,14 @@ export const RealtimeChat = ({
     )
     // Sort by creation date
     const sortedMessages = uniqueMessages.sort((a, b) => a.createdAt.localeCompare(b.createdAt))
+
+    const data = Cookies.get('status');
+    if (data == "true" && sortedMessages.length <= 2) {
+      setWait(true)
+    }
+    else {
+      setWait(false)
+    }
 
     return sortedMessages
   }, [initialMessages, realtimeMessages])
@@ -84,11 +97,6 @@ export const RealtimeChat = ({
     <div className="flex flex-col h-full w-full bg-background text-foreground antialiased">
       {/* Messages */}
       <div ref={containerRef} className="flex-1 overflow-y-auto p-4 space-y-4">
-        {allMessages.length === 0 ? (
-          <div className="text-center text-sm text-muted-foreground">
-            No messages yet. Start the conversation!
-          </div>
-        ) : null}
         <div className="space-y-1">
           {allMessages.map((message, index) => {
             const prevMessage = index > 0 ? allMessages[index - 1] : null
@@ -103,6 +111,8 @@ export const RealtimeChat = ({
                   message={message}
                   isOwnMessage={message.user.name === username}
                   showHeader={showHeader}
+                  firstMessage={message.content == secret_word}
+                  image={image}
                 />
               </div>
             )
@@ -120,13 +130,13 @@ export const RealtimeChat = ({
           value={newMessage}
           onChange={(e) => setNewMessage(e.target.value)}
           placeholder="Type a message..."
-          disabled={!isConnected}
+          disabled={!isConnected || wait}
         />
         {isConnected && newMessage.trim() && (
           <Button
             className="aspect-square rounded-full animate-in fade-in slide-in-from-right-4 duration-300"
             type="submit"
-            disabled={!isConnected}
+            disabled={!isConnected || wait}
           >
             <Send className="size-4" />
           </Button>
