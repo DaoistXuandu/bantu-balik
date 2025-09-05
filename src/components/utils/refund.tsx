@@ -23,6 +23,8 @@ export default function Refund({ unreadMessages, lastUpdateAt, id, isSearchProce
                 return !isAlreadyDone
             }
             else {
+                if (!isAlreadyDone)
+                    return false
                 if (isValid) {
                     return verdict.toLocaleLowerCase() == "valid"
                 }
