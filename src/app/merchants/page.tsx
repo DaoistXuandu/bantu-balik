@@ -18,6 +18,11 @@ export default function Merchants() {
         if (Cookies.get("username") == null) {
             router.push("/login")
         }
+
+        if (Cookies.get("username") == "false") {
+            router.push("/profile")
+        }
+
         setLoaded(true)
     }, [loaded])
 

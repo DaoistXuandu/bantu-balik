@@ -2,8 +2,16 @@
 
 import { apps_name } from "@/config/data"
 import { poppins, nunito } from "@/lib/utilities/font"
+import { useRouter } from "next/navigation"
+import Cookies from 'js-cookie';
 
 export default function MainNavbar({ product, change }: { product: boolean, change: (e: string) => void }) {
+    const router = useRouter()
+    function handleOut() {
+        Cookies.remove("username")
+        Cookies.remove("status")
+        router.push("/login")
+    }
     return (
         <div className="relative h-24 w-full h-fit z-999 text-black pb-3 pt-6 pl-12 pr-12 flex flex-row items-center border border-b-1 border-gray-300">
             <div className="h-full w-full flex flex-row justify-between items-center gap-10">
@@ -23,13 +31,20 @@ export default function MainNavbar({ product, change }: { product: boolean, chan
                         <input onChange={e => change(e.target.value)} placeholder={`${product ? "Cari Barang" : "Cari Toko"}`} className="w-full focus:outline-none placeholder:text-md">
                         </input>
                     </div>
-                    <a href="/profile" className="w-1/6 flex justify-end">
-                        <div className="h-fit w-fit rounded-full p-3 bg-green-700 hover:scale-105 cursor-pointer">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="white" className="size-6">
-                                <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
+                    <div className="flex flex-row justify-end w-1/6 gap-5">
+                        <div onClick={handleOut} className="cursor-pointer h-fit w-fit rounded-full p-3 bg-green-700 hover:scale-105 cursor-pointer">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1} stroke="white" className="size-6">
+                                <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0 0 13.5 3h-6a2.25 2.25 0 0 0-2.25 2.25v13.5A2.25 2.25 0 0 0 7.5 21h6a2.25 2.25 0 0 0 2.25-2.25V15M12 9l-3 3m0 0 3 3m-3-3h12.75" />
                             </svg>
                         </div>
-                    </a>
+                        <a href="/profile" className="flex justify-end">
+                            <div className="h-fit w-fit rounded-full p-3 bg-green-700 hover:scale-105 cursor-pointer">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="white" className="size-6">
+                                    <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
+                                </svg>
+                            </div>
+                        </a>
+                    </div>
                 </div>
             </div>
         </div >
