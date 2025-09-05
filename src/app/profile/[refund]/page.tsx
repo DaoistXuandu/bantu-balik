@@ -125,7 +125,7 @@ export default function RefundItem() {
                         <div className="text-sm">{item?.name}</div>
                         <div className={`${item != null ? '' : 'hidden'} text-sm font-bold`}>Rp {item?.price}</div>
                     </div>
-                    <div className={`${isUser || !loaded ? 'hidden' : ''} w-full flex flex-row gap-5 items-center justify-between`}>
+                    <div className={`${isUser || !loaded || refund?.status ? 'hidden' : ''} w-full flex flex-row gap-5 items-center justify-between`}>
                         <div onClick={e => updateRefund(false)} className="w-1/2 text-center cursor-pointer hover:scale-95 border-2 bg-white border-red-500 p-3 shadow-lg pl-4 pr-4 font-thin text-red-500 rounded-md">Tolak Refund</div>
                         <div onClick={e => updateRefund(true)} className="w-1/2 text-center cursor-pointer hover:scale-95 font-bold text-white bg-green-700 p-3 shadow-lg pl-4 pr-4 rounded-md">Refund Selesai</div>
                     </div>
