@@ -15,8 +15,13 @@ export default function Profile() {
     const [user, setUser] = useState(false)
     const [unreads, setUnreads] = useState<{ [key: string]: number }>({});
     const [currentUser, setCurrentUser] = useState(Cookies.get('username') as string)
+    const [processValid, setProcessValid] = useState(0)
+    const [processInvalid, setProcessInvalid] = useState(0)
+    const [doneValid, setDoneValid] = useState(0)
+    const [doneInalid, setDoneInvalid] = useState(0)
 
     const { refundId, username, read, prev } = useListenerDB()
+
 
     const updateItem = (key: string, delta: number = 1) => {
         setUnreads(prev => ({
@@ -65,6 +70,25 @@ export default function Profile() {
     }, [loaded])
 
     useEffect(() => {
+        let a = 0, b = 0, c = 0, d = 0;
+        refunds.map(refund => {
+            if (refund.verdict == "Valid" && refund.status)
+                a++
+            else if (refund.verdict == "Invalid" && refund.status)
+                b++
+            else if (refund.verdict == "Valid" && !refund.status)
+                c++
+            else
+                d++
+        })
+
+        setDoneValid(a)
+        setDoneInvalid(b)
+        setProcessValid(c)
+        setProcessInvalid(d)
+    }, [refunds])
+
+    useEffect(() => {
         if (!read && username != currentUser)
             updateItem(refundId)
     }, [prev, refundId, username, read])
@@ -80,8 +104,8 @@ export default function Profile() {
                 <div className="z-0 bg-white shadow-sm rounded-md">
                     <div className="p-5 flex flex-col gap-5">
                         <div className={`${(user && processData) || !loaded ? 'hidden' : ''} cursor-pointer flex flex-row ${noto_sans.className} gap-2`}>
-                            <div onClick={e => setValid(true)} className={`${valid ? "text-white bg-gray-500 font-bold" : "text-black"} p-2 pl-4 pr-4 text-md rounded-xl`}>{processData ? "Valid" : "Diterima"}</div>
-                            <div onClick={e => setValid(false)} className={`${!valid ? "text-white bg-gray-500 font-bold" : "text-black"} p-2 pl-4 pr-4 text-md rounded-xl`}>{processData ? "Tidak Valid" : "Ditolak"}</div>
+                            <div onClick={e => setValid(true)} className={`${valid ? "text-white bg-gray-500 font-bold" : "text-black"} p-2 pl-4 pr-4 text-md rounded-xl`}>{processData ? `(${processValid}) Valid` : `(${doneValid}) Diterima`}</div>
+                            <div onClick={e => setValid(false)} className={`${!valid ? "text-white bg-gray-500 font-bold" : "text-black"} p-2 pl-4 pr-4 text-md rounded-xl`}>{processData ? `(${processInvalid}) Tidak Valid` : `(${doneInalid}) Ditolak`}</div>
                         </div>
                         {
                             refunds.map(refund => (
