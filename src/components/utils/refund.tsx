@@ -78,8 +78,8 @@ export default function Refund({ unreadMessages, lastUpdateAt, id, isSearchProce
     }
 
     return (
-        <div className={`${check() ? '' : 'hidden'} w-full p-3 bg-gray-100 rounded-sm inset-shadow-sm flex flex-row gap-2 ${noto_sans.className}`}>
-            <div className="w-10/12 flex flex-row gap-3 items-center">
+        <div className={`${check() ? '' : 'hidden'} w-full p-3 bg-gray-100 rounded-sm inset-shadow-sm flex flex-col md:flex-row gap-2 ${noto_sans.className}`}>
+            <div className="w-10/12 flex flex-col md:flex-row gap-3 md:items-center">
                 <img src={image_main} className="size-24 rounded-sm" alt="" />
                 <img src={image_review} className="size-24 rounded-sm" alt="" />
                 <div className="flex flex-col items-start justify-start">
@@ -96,7 +96,7 @@ export default function Refund({ unreadMessages, lastUpdateAt, id, isSearchProce
                     </div>
                 </div>
             </div>
-            <div className="w-2/12 flex flex-col items-center justify-center p-3 gap-3 cursor-pointer hover:scale-95">
+            <div className="w-full md:w-2/12 flex flex-col items-center justify-center mt-5 md:mt-0 md:p-3 gap-3 cursor-pointer hover:scale-95">
                 <a
                     href={`/profile/${id}`}
                     className="relative cursor-pointer p-2 bg-green-700 font-bold text-white w-full text-center rounded-sm text-md shadow-md"

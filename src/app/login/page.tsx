@@ -54,7 +54,7 @@ export default function Home() {
         <div>
             <div className="fixed h-24 w-full z-999 text-black p-6 mt-6 pl-12 pr-12 flex flex-row">
                 <div className="h-full w-full flex flex-row justify-between items-center">
-                    <div className="h-full flex flex-row items-center gap-2">
+                    <div className="w-full h-full flex flex-row justify-center  md:justify-start items-center gap-2">
                         <svg xmlns="http://www.w3.org/2000/svg" className="size-10 aspect-square" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="green">
                             <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75 11.25 15 15 9.75m-3-7.036A11.959 11.959 0 0 1 3.598 6 11.99 11.99 0 0 0 3 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285Z" />
                         </svg>
@@ -66,11 +66,11 @@ export default function Home() {
             </div >
             <Loader wait={wait} />
             <div className="min-h-screen max-h-screen bg-white text-black flex flex-row items-center overflow-hidden">
-                <div className="z-10 w-2/3 flex items-center justify-center">
+                <div className="hidden md:flex z-10 w-2/3 flex items-center justify-center">
                     <img className="w-full aspect-square" src="./assets/security-bw.svg" alt="Description of the SVG">
                     </img>
                 </div>
-                <div className={`w-1/3 flex flex-row pr-24 gap-10 right-0 items-center justify-center ${noto_sans.className}`}>
+                <div className={`w-full pl-5 pr-5 md:w-1/3 flex flex-row md:pl-0 md:pr-24 gap-10 right-0 items-center justify-center ${noto_sans.className}`}>
                     <div className="p-8 inset-shadow-sm shadow-2xl bg-white rounded-2xl flex flex-col gap-20 min-w-96 justify-center items-center">
                         <div className="h-full flex flex-row items-center gap-2 pt-5">
                             <svg xmlns="http://www.w3.org/2000/svg" className="size-10 aspect-square" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="green">

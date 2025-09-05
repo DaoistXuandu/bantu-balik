@@ -13,7 +13,7 @@ export default function Home() {
   return (
     <div>
       <div className="fixed h-24 w-full z-999 text-black p-6 mt-6 pl-12 pr-12 flex flex-row">
-        <div className="h-full w-full flex flex-row justify-between items-center">
+        <div className="h-full w-full flex flex-row justify-center md:justify-between items-center">
           <div className="h-full flex flex-row items-center gap-2">
             <svg xmlns="http://www.w3.org/2000/svg" className="size-10 aspect-square" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="green">
               <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75 11.25 15 15 9.75m-3-7.036A11.959 11.959 0 0 1 3.598 6 11.99 11.99 0 0 0 3 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285Z" />
@@ -30,13 +30,13 @@ export default function Home() {
         </div>
       </div >
       <div className="relative min-h-screen max-h-screen bg-white text-black flex flex-row items-center overflow-hidden">
-        <div className="absolute z-10 w-2/3 flex items-center justify-center">
+        <div className="hidden md:flex absolute z-10 w-2/3 items-center justify-center">
           <img className="w-full aspect-square" src="./assets/security-bw.svg" alt="Description of the SVG">
           </img>
         </div>
-        <div className={`absolute w-2/4 flex flex-col pr-24 gap-10 right-0 ${noto_sans.className}`}>
+        <div className={`absolute w-full justify-center md:w-2/4 flex flex-col p-10 md:pl-0 md:pr-24 gap-10 right-0 ${noto_sans.className}`}>
           <div className={`relative z-50 flex flex-col gap-6 ${loaded ? '' : 'opacity-0'} transition duration-1000 ease-in-out`}>
-            <div className="flex flex-col md:text-4xl lg:text-6xl font-bold">
+            <div className="flex flex-col text-3xl md:text-4xl lg:text-6xl font-bold">
               <div>Mau <b className="text-white bg-green-950 pr-2 pl-2">Refund?</b></div>
               <div className="mt-3"><b className="text-white bg-green-950 pr-2 pl-2">{apps_name}</b> Aja!</div>
             </div>

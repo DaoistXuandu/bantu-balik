@@ -24,14 +24,14 @@ export default function MainNavbar({ product, change }: { product: boolean, chan
                     </a>
                 </div>
                 <div className="w-3/4 flex flex-row gap-5 items-center">
-                    <div className={`w-5/6 gap-6 text-black text-lg pl-4 p-1 border border-2 rounded-lg border-gray-200 flex flex-row justify-start items-center ${nunito.className}`}>
+                    <div className={`hidden md:flex w-5/6 gap-6 text-black text-lg pl-4 p-1 border border-2 rounded-lg border-gray-200 flex flex-row justify-start items-center ${nunito.className}`}>
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="gray" className="size-5">
                             <path strokeLinecap="round" strokeLinejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
                         </svg>
                         <input onChange={e => change(e.target.value)} placeholder={`${product ? "Cari Barang" : "Cari Toko"}`} className="w-full focus:outline-none placeholder:text-md">
                         </input>
                     </div>
-                    <div className="flex flex-row justify-end w-1/6 gap-5">
+                    <div className="w-full flex flex-row justify-end md:w-1/6 gap-5">
                         <div onClick={handleOut} className="cursor-pointer h-fit w-fit rounded-full p-3 bg-green-700 hover:scale-105 cursor-pointer">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1} stroke="white" className="size-6">
                                 <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0 0 13.5 3h-6a2.25 2.25 0 0 0-2.25 2.25v13.5A2.25 2.25 0 0 0 7.5 21h6a2.25 2.25 0 0 0 2.25-2.25V15M12 9l-3 3m0 0 3 3m-3-3h12.75" />

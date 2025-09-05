@@ -72,10 +72,10 @@ export default function Profile() {
     return (
         <div className="min-h-screen max-h-fit bg-gray-100 pb-10">
             <ItemNavbar profile={true} />
-            <div className="text-black flex flex-col pl-24 pr-24 mt-10">
+            <div className="text-black flex flex-col pl-5 pr-5 md:pl-24 md:pr-24 mt-10">
                 <div className={`z-99 ${noto_sans.className} text-black flex flex-row pl-10 cursor-pointer`}>
-                    <div onClick={e => setProcessData(true)} className={`p-4 flex ${processData ? "bg-white shadow-[inset_0_0.3px_0.5px_rgba(0,0,0,0.6)] text-green-700 rounded-t-sm" : "text-green-700"} font-bold`}>Dalam Proses</div>
-                    <div onClick={e => setProcessData(false)} className={`p-4 flex ${!processData ? "bg-white shadow-[inset_0_0.3px_0.5px_rgba(0,0,0,0.6)]  text-green-700 rounded-t-sm" : "text-green-700"} font-bold`}>Selesai</div>
+                    <div onClick={e => setProcessData(true)} className={`p-4 flex ${processData ? "bg-white shadow-[inset_0_0.3px_0.5px_rgba(0,0,0,0.6)] text-green-700 rounded-t-sm" : "text-green-700"} font-bold text-center`}>Dalam Proses</div>
+                    <div onClick={e => setProcessData(false)} className={`p-4 flex ${!processData ? "bg-white shadow-[inset_0_0.3px_0.5px_rgba(0,0,0,0.6)]  text-green-700 rounded-t-sm" : "text-green-700"} font-bold text-center`}>Selesai</div>
                 </div>
                 <div className="z-0 bg-white shadow-sm rounded-md">
                     <div className="p-5 flex flex-col gap-5">

@@ -118,8 +118,8 @@ export default function RefundItem() {
         < div className="min-h-screen max-h-fit bg-gray-100" >
             <Loader wait={wait} />
             <ItemNavbar profile={true} />
-            <div className="text-black flex flex-row pl-24 pr-20 mt-10 gap-5 h-full">
-                <div className={`w-3/12 h-fit flex flex-col gap-3 ${nunito.className}`}>
+            <div className="text-black flex flex-col md:flex-row pl-5 pr-5 md:pl-24 md:pr-20 mt-10 gap-5 h-full">
+                <div className={`w-full md:w-3/12 h-fit flex flex-col gap-3 ${nunito.className}`}>
                     <div className="flex flex-col gap-3 bg-white p-5 shadow-lg rounded-md">
                         <img src={item ? item.image : refund?.main} className="rounded-md" alt="" />
                         <div className="text-sm">{item?.name}</div>
@@ -130,7 +130,7 @@ export default function RefundItem() {
                         <div onClick={e => updateRefund(true)} className="w-1/2 text-center cursor-pointer hover:scale-95 font-bold text-white bg-green-700 p-3 shadow-lg pl-4 pr-4 rounded-md">Refund Selesai</div>
                     </div>
                 </div>
-                <div className="relative w-9/12 flex flex-col gap-2 pl-10 h-full">
+                <div className="relative w-full md:w-9/12 flex flex-col gap-2 md:pl-10 pb-10 h-full">
                     <div className="bottom-5 right-5 w-full h-[650px] shadow-lg rounded-lg overflow-hidden bg-white">
                         <RealtimeChat
                             image={refund?.review as string}
